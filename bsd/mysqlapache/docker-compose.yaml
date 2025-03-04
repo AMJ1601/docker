@@ -1,0 +1,23 @@
+services:
+  apache:
+    image: php:7.2-apache
+    container_name: phpapache
+    volumes:
+      - "./html:/var/www/html"
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+
+  sql:
+    image: bitnami/mysql
+    container_name: mysqlapache
+    volumes:
+      - ./data:/bitnami/mysql/data
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=secret
+    restart: unless-stopped
+    ports:
+      - "3307:3306"

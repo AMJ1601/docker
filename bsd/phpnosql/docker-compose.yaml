@@ -1,0 +1,17 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-enterprise-server
+    container_name: mongodb2
+    ports:
+      - "27018:17017"
+    volumes:
+      - "./data:/data/db"
+
+  apache:
+    image: php:7.2-apache
+    container_name: phpapachenosql
+    volumes:
+      - "./html:/var/www/html"
+    ports:
+      - "81:80"
+    restart: unless-stopped

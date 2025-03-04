@@ -1,0 +1,1 @@
+la carpeta data tiene que tener propiedad de docker en grupo o usuario

@@ -1,0 +1,2 @@
+docker exec -it mysqlapache bash
+mysql -u root -psecret
