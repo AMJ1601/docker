@@ -1,0 +1,50 @@
+services:
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: wirepiho
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - SERVERURL=cangreburger.duckdns.org
+      - PEERS=5
+      - INTERNAL_SUBNET=10.13.13.0
+    ports:
+      - 51820:51820/udp
+    volumes:
+      - "./config:/config"
+      - "/lib/modules:/lib/modules"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+    dns:
+      - 172.0.0.9
+    networks:
+      red:
+        ipv4_address: 172.0.0.10
+
+  pihole:
+    image: pihole/pihole
+    container_name: pihole
+    expose:
+      - "53"
+      - "80"
+      - "443"
+    environment:
+      TZ: Europe/Madrid
+    volumes:
+      - "./etc-pihole:/etc/pihole"
+      - "./etc-dnsmasq.d:/etc/dnsmasq.d"
+    restart: unless-stopped
+    networks:
+      red:
+        ipv4_address: 172.0.0.9
+
+networks:
+  red:
+    ipam:
+      config:
+        - subnet: 172.0.0.0/24
